@@ -132,10 +132,10 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Navigate to="transactions" replace />
+        element: <Navigate to="booklist" replace />
       },
       {
-        path: 'transactions',
+        path: 'booklist',
         element: <Transactions />
       },
       {
