@@ -26,6 +26,9 @@ const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
 const Transactions = Loader(
   lazy(() => import('src/content/applications/Transactions'))
 );
+const Search = Loader(
+  lazy(() => import('src/content/applications/Transactions/Search'))
+);
 const UserProfile = Loader(
   lazy(() => import('src/content/applications/Users/profile'))
 );
@@ -137,6 +140,10 @@ const routes: RouteObject[] = [
       {
         path: 'booklist',
         element: <Transactions />
+      },
+      {
+        path: 'search',
+        element: <Search />
       },
       {
         path: 'profile',

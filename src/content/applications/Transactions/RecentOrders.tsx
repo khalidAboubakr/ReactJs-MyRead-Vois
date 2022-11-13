@@ -7,6 +7,7 @@ import * as BooksAPI from '../../../data/BooksAPI';
 import React, { ChangeEvent, useState } from 'react';
 import { any } from 'prop-types';
 import { format } from 'date-fns';
+import Search from './Search';
 class RecentOrders extends React.Component {
   state = { books: [] };
 
@@ -15,7 +16,20 @@ class RecentOrders extends React.Component {
     BooksAPI.getAll().then(books => this.setState({ books }));
   }
 
-
+  changeShelf = (changedBook, shelf) => {
+    BooksAPI.update(changedBook, shelf).then(response => {
+      // set shelf for new or updated book
+      changedBook.shelf = shelf;
+      // update state with changed book
+      this.setState(prevState => ({
+        books: (prevState as any).books
+          // remove updated book from array
+          .filter(book => book.id !== changedBook.id)
+          // add updated book to array
+          .concat(changedBook)
+      }));
+    });
+  };
 
   render() {
     const { books } = this.state;
@@ -29,6 +43,7 @@ class RecentOrders extends React.Component {
     // };
     return (
       <Card>
+        
       <Card>
   
       <Divider />

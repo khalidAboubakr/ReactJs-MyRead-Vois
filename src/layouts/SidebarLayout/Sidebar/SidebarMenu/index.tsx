@@ -224,7 +224,7 @@ function SidebarMenu() {
                   disableRipple
                   component={RouterLink}
                   onClick={closeSidebar}
-                  to="/management/profile/settings"
+                  to="/management/search"
                   startIcon={<DisplaySettingsTwoToneIcon />}
                 >
                   Search Books
