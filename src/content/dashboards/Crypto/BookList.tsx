@@ -1,4 +1,5 @@
 import {
+  Container,
   Button,
   Card,
   Box,
@@ -20,8 +21,17 @@ import Text from 'src/components/Text';
 import Chart from 'react-apexcharts';
 import type { ApexOptions } from 'apexcharts';
 import BookShelf from './BookShelf';
-
-
+import { Helmet } from 'react-helmet-async';
+import PageHeader from './PageHeader';
+import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import Footer from 'src/components/Footer';
+import * as BooksAPI from '../../../data/BooksAPI';
+import Wallets from './Wallets';
+import AccountSecurity from './AccountSecurity';
+import WatchList from './WatchList';
+import React from 'react';
+import { any } from 'prop-types';
+import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 const BookList = props => {
   const { books, changeShelf } = props;
   const shelfTypes = [
@@ -31,16 +41,27 @@ const BookList = props => {
   ];
 
   return (
+    
     <div className="list-books-content">
       {shelfTypes.map((shelf, index) => {
         const shelfBooks = books.filter(book => book.shelf === shelf.type);
         return (
-          <div className="bookshelf" key={index}>
-            <h2 className="bookshelf-title">{shelf.title}</h2>
-            <div className="bookshelf-books">
-              <BookShelf books={shelfBooks} changeShelf={changeShelf} />
-            </div>
-          </div>
+          <Grid item xs={12} key={index}>
+             <>
+      <Box
+        display="flex"
+        alignItems="center"
+        justifyContent="space-between"
+        sx={{
+          pb: 3
+        }}
+      >
+        <Typography variant="h3">{shelf.title}</Typography>
+      
+      </Box>
+      <BookShelf books={shelfBooks} changeShelf={changeShelf} />
+      </>
+          </Grid>
         );
       })}
     </div>

@@ -39,32 +39,21 @@ import BookList from './BookList';
       return (
     <>
       <Helmet>
-        <title>Crypto Dashboard</title>
+        <title>Dashboard</title>
       </Helmet>
       <PageTitleWrapper>
         <PageHeader />
       </PageTitleWrapper>
       <Container maxWidth="lg">
-        <Grid
+      <Grid
           container
           direction="row"
           justifyContent="center"
           alignItems="stretch"
           spacing={4}
         >
-          <Grid item xs={12}>
-          <BookList books={books} changeShelf={this.changeShelf} />
-          </Grid>
-          <Grid item lg={8} xs={12}>
-            <Wallets />
-          </Grid>
-          <Grid item lg={4} xs={12}>
-            <AccountSecurity />
-          </Grid>
-          <Grid item xs={12}>
-            <WatchList />
-          </Grid>
-        </Grid>
+      <BookList books={books} changeShelf={this.changeShelf} />
+      </Grid>
       </Container>
       <Footer />
     </>
