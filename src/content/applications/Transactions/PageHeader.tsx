@@ -4,7 +4,7 @@ import AddTwoToneIcon from '@mui/icons-material/AddTwoTone';
 
 function PageHeader() {
   const user = {
-    name: 'Catherine Pike',
+    name: 'Khalid Aboubakr',
     avatar: '/static/images/avatars/1.jpg'
   };
   return (
@@ -18,13 +18,7 @@ function PageHeader() {
         </Typography>
       </Grid>
       <Grid item>
-        <Button
-          sx={{ mt: { xs: 2, md: 0 } }}
-          variant="contained"
-          startIcon={<AddTwoToneIcon fontSize="small" />}
-        >
-          Create transaction
-        </Button>
+      
       </Grid>
     </Grid>
   );

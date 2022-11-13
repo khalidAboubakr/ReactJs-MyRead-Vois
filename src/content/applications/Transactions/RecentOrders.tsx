@@ -1,147 +1,146 @@
-import { Card } from '@mui/material';
-import { CryptoOrder } from 'src/models/crypto_order';
-import RecentOrdersTable from './RecentOrdersTable';
-import { subDays } from 'date-fns';
+import { Helmet } from 'react-helmet-async';
+import PageHeader from './PageHeader';
+import PageTitleWrapper from 'src/components/PageTitleWrapper';
+import { Box, Card, Checkbox, Container, Divider, Grid, IconButton, Table, TableBody, TableCell, TableContainer, TableHead, TablePagination, TableRow, Tooltip, Typography } from '@mui/material';
+import Footer from 'src/components/Footer';
+import * as BooksAPI from '../../../data/BooksAPI';
+import React, { ChangeEvent, useState } from 'react';
+import { any } from 'prop-types';
+import { format } from 'date-fns';
+import Search from './Search';
+class RecentOrders extends React.Component {
+  state = { books: [] };
 
-function RecentOrders() {
-  const cryptoOrders: CryptoOrder[] = [
-    {
-      id: '1',
-      orderDetails: 'Fiat Deposit',
-      orderDate: new Date().getTime(),
-      status: 'completed',
-      orderID: 'VUVX709ET7BY',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 34.4565,
-      amount: 56787,
-      cryptoCurrency: 'ETH',
-      currency: '$'
-    },
-    {
-      id: '2',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 1).getTime(),
-      status: 'completed',
-      orderID: '23M3UOG65G8K',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '3',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 5).getTime(),
-      status: 'failed',
-      orderID: 'F6JHK65MS818',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '4',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 55).getTime(),
-      status: 'completed',
-      orderID: 'QJFAI7N84LGM',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '5',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 56).getTime(),
-      status: 'pending',
-      orderID: 'BO5KFSYGC0YW',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '6',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 33).getTime(),
-      status: 'completed',
-      orderID: '6RS606CBMKVQ',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 6.58454334,
-      amount: 8734587,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '7',
-      orderDetails: 'Fiat Deposit',
-      orderDate: new Date().getTime(),
-      status: 'pending',
-      orderID: '479KUYHOBMJS',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 1212',
-      amountCrypto: 2.346546,
-      amount: 234234,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '8',
-      orderDetails: 'Paypal Withdraw',
-      orderDate: subDays(new Date(), 22).getTime(),
-      status: 'completed',
-      orderID: 'W67CFZNT71KR',
-      sourceName: 'Paypal Account',
-      sourceDesc: '*** 1111',
-      amountCrypto: 3.345456,
-      amount: 34544,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '9',
-      orderDetails: 'Fiat Deposit',
-      orderDate: subDays(new Date(), 11).getTime(),
-      status: 'completed',
-      orderID: '63GJ5DJFKS4H',
-      sourceName: 'Bank Account',
-      sourceDesc: '*** 2222',
-      amountCrypto: 1.4389567945,
-      amount: 123843,
-      cryptoCurrency: 'BTC',
-      currency: '$'
-    },
-    {
-      id: '10',
-      orderDetails: 'Wallet Transfer',
-      orderDate: subDays(new Date(), 123).getTime(),
-      status: 'failed',
-      orderID: '17KRZHY8T05M',
-      sourceName: 'Wallet Transfer',
-      sourceDesc: "John's Cardano Wallet",
-      amountCrypto: 765.5695,
-      amount: 7567,
-      cryptoCurrency: 'ADA',
-      currency: '$'
-    }
-  ];
+  componentDidMount() {
+    // get books on load
+    BooksAPI.getAll().then(books => this.setState({ books }));
+  }
 
-  return (
-    <Card>
-      <RecentOrdersTable cryptoOrders={cryptoOrders} />
+  changeShelf = (changedBook, shelf) => {
+    BooksAPI.update(changedBook, shelf).then(response => {
+      // set shelf for new or updated book
+      changedBook.shelf = shelf;
+      // update state with changed book
+      this.setState(prevState => ({
+        books: (prevState as any).books
+          // remove updated book from array
+          .filter(book => book.id !== changedBook.id)
+          // add updated book to array
+          .concat(changedBook)
+      }));
+    });
+  };
+
+  render() {
+    const { books } = this.state;
+    // const [page, setPage] = useState<number>(0);
+    // const [limit, setLimit] = useState<number>(5);
+    // const handlePageChange = (event: any, newPage: number): void => {
+    //   setPage(newPage);
+    // };
+    // const handleLimitChange = (event: ChangeEvent<HTMLInputElement>): void => {
+    //   setLimit(parseInt(event.target.value));
+    // };
+    return (
+      <Card>
+        
+      <Card>
+  
+      <Divider />
+      <TableContainer>
+        <Table>
+          <TableHead>
+            <TableRow>
+          
+              <TableCell>Title</TableCell>
+              <TableCell>publisher</TableCell>
+              <TableCell>averageRating</TableCell>
+              <TableCell>categories</TableCell>
+            </TableRow>
+          </TableHead>
+          <TableBody>
+            {books.map((cryptoOrder) => {
+              const isCryptoOrderSelected = true;
+              return (
+                <TableRow
+                  hover
+                  key={cryptoOrder.id}
+                >
+              
+                  <TableCell>
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.title}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {cryptoOrder.authors}
+                    </Typography>
+                  </TableCell>
+                  <TableCell >
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.publisher}
+                    </Typography>
+                    <Typography variant="body2" color="text.secondary" noWrap>
+                      {cryptoOrder.publishedDate}
+                    </Typography>
+                  </TableCell>
+                 
+                  <TableCell >
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.averageRating}
+                    </Typography>
+                  
+                  </TableCell>
+                  <TableCell >
+                    <Typography
+                      variant="body1"
+                      fontWeight="bold"
+                      color="text.primary"
+                      gutterBottom
+                      noWrap
+                    >
+                      {cryptoOrder.categories}
+                    </Typography>
+                  
+                  </TableCell>
+                </TableRow>
+              );
+            })}
+          </TableBody>
+        </Table>
+      </TableContainer>
+      {/* <Box p={2}>
+        <TablePagination
+          component="div"
+          count={books.length}
+          onPageChange={handlePageChange}
+          onRowsPerPageChange={handleLimitChange}
+          page={page}
+          rowsPerPage={limit}
+          rowsPerPageOptions={[5, 10, 25, 30]}
+        />
+      </Box> */}
     </Card>
-  );
-}
+    </Card>
+);
+}}
 
 export default RecentOrders;
+
