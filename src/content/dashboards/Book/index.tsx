@@ -11,7 +11,7 @@ import React from 'react';
 import { any } from 'prop-types';
 import BookList from './BookList';
 
-  class DashboardCrypto extends React.Component {
+  class DashboardBook extends React.Component {
     state = { books: [] };
 
     componentDidMount() {
@@ -60,4 +60,4 @@ import BookList from './BookList';
   );
 }}
 
-export default DashboardCrypto;
+export default DashboardBook;

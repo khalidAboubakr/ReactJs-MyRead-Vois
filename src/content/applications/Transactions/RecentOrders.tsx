@@ -60,7 +60,7 @@ class RecentOrders extends React.Component {
           </TableHead>
           <TableBody>
             {books.map((cryptoOrder) => {
-              const isCryptoOrderSelected = true;
+              const isBookOrderSelected = true;
               return (
                 <TableRow
                   hover

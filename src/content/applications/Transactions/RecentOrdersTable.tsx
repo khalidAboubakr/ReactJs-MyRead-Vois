@@ -26,21 +26,21 @@ import {
 } from '@mui/material';
 
 import Label from 'src/components/Label';
-import { CryptoOrder, CryptoOrderStatus } from 'src/models/crypto_order';
+import { BookOrder, BookOrderStatus } from 'src/models/crypto_order';
 import EditTwoToneIcon from '@mui/icons-material/EditTwoTone';
 import DeleteTwoToneIcon from '@mui/icons-material/DeleteTwoTone';
 import BulkActions from './BulkActions';
 
 interface RecentOrdersTableProps {
   className?: string;
-  cryptoOrders: CryptoOrder[];
+  cryptoOrders: BookOrder[];
 }
 
 interface Filters {
-  status?: CryptoOrderStatus;
+  status?: BookOrderStatus;
 }
 
-const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
+const getStatusLabel = (cryptoOrderStatus: BookOrderStatus): JSX.Element => {
   const map = {
     failed: {
       text: 'Failed',
@@ -62,9 +62,9 @@ const getStatusLabel = (cryptoOrderStatus: CryptoOrderStatus): JSX.Element => {
 };
 
 const applyFilters = (
-  cryptoOrders: CryptoOrder[],
+  cryptoOrders: BookOrder[],
   filters: Filters
-): CryptoOrder[] => {
+): BookOrder[] => {
   return cryptoOrders.filter((cryptoOrder) => {
     let matches = true;
 
@@ -77,18 +77,18 @@ const applyFilters = (
 };
 
 const applyPagination = (
-  cryptoOrders: CryptoOrder[],
+  cryptoOrders: BookOrder[],
   page: number,
   limit: number
-): CryptoOrder[] => {
+): BookOrder[] => {
   return cryptoOrders.slice(page * limit, page * limit + limit);
 };
 
 const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
-  const [selectedCryptoOrders, setSelectedCryptoOrders] = useState<string[]>(
+  const [selectedBookOrders, setSelectedBookOrders] = useState<string[]>(
     []
   );
-  const selectedBulkActions = selectedCryptoOrders.length > 0;
+  const selectedBulkActions = selectedBookOrders.length > 0;
   const [page, setPage] = useState<number>(0);
   const [limit, setLimit] = useState<number>(5);
   const [filters, setFilters] = useState<Filters>({
@@ -127,27 +127,27 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     }));
   };
 
-  const handleSelectAllCryptoOrders = (
+  const handleSelectAllBookOrders = (
     event: ChangeEvent<HTMLInputElement>
   ): void => {
-    setSelectedCryptoOrders(
+    setSelectedBookOrders(
       event.target.checked
         ? cryptoOrders.map((cryptoOrder) => cryptoOrder.id)
         : []
     );
   };
 
-  const handleSelectOneCryptoOrder = (
+  const handleSelectOneBookOrder = (
     event: ChangeEvent<HTMLInputElement>,
     cryptoOrderId: string
   ): void => {
-    if (!selectedCryptoOrders.includes(cryptoOrderId)) {
-      setSelectedCryptoOrders((prevSelected) => [
+    if (!selectedBookOrders.includes(cryptoOrderId)) {
+      setSelectedBookOrders((prevSelected) => [
         ...prevSelected,
         cryptoOrderId
       ]);
     } else {
-      setSelectedCryptoOrders((prevSelected) =>
+      setSelectedBookOrders((prevSelected) =>
         prevSelected.filter((id) => id !== cryptoOrderId)
       );
     }
@@ -161,17 +161,17 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
     setLimit(parseInt(event.target.value));
   };
 
-  const filteredCryptoOrders = applyFilters(cryptoOrders, filters);
-  const paginatedCryptoOrders = applyPagination(
-    filteredCryptoOrders,
+  const filteredBookOrders = applyFilters(cryptoOrders, filters);
+  const paginatedBookOrders = applyPagination(
+    filteredBookOrders,
     page,
     limit
   );
-  const selectedSomeCryptoOrders =
-    selectedCryptoOrders.length > 0 &&
-    selectedCryptoOrders.length < cryptoOrders.length;
-  const selectedAllCryptoOrders =
-    selectedCryptoOrders.length === cryptoOrders.length;
+  const selectedSomeBookOrders =
+    selectedBookOrders.length > 0 &&
+    selectedBookOrders.length < cryptoOrders.length;
+  const selectedAllBookOrders =
+    selectedBookOrders.length === cryptoOrders.length;
   const theme = useTheme();
 
   return (
@@ -213,9 +213,9 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
               <TableCell padding="checkbox">
                 <Checkbox
                   color="primary"
-                  checked={selectedAllCryptoOrders}
-                  indeterminate={selectedSomeCryptoOrders}
-                  onChange={handleSelectAllCryptoOrders}
+                  checked={selectedAllBookOrders}
+                  indeterminate={selectedSomeBookOrders}
+                  onChange={handleSelectAllBookOrders}
                 />
               </TableCell>
               <TableCell>Order Details</TableCell>
@@ -227,24 +227,24 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
             </TableRow>
           </TableHead>
           <TableBody>
-            {paginatedCryptoOrders.map((cryptoOrder) => {
-              const isCryptoOrderSelected = selectedCryptoOrders.includes(
+            {paginatedBookOrders.map((cryptoOrder) => {
+              const isBookOrderSelected = selectedBookOrders.includes(
                 cryptoOrder.id
               );
               return (
                 <TableRow
                   hover
                   key={cryptoOrder.id}
-                  selected={isCryptoOrderSelected}
+                  selected={isBookOrderSelected}
                 >
                   <TableCell padding="checkbox">
                     <Checkbox
                       color="primary"
-                      checked={isCryptoOrderSelected}
+                      checked={isBookOrderSelected}
                       onChange={(event: ChangeEvent<HTMLInputElement>) =>
-                        handleSelectOneCryptoOrder(event, cryptoOrder.id)
+                        handleSelectOneBookOrder(event, cryptoOrder.id)
                       }
-                      value={isCryptoOrderSelected}
+                      value={isBookOrderSelected}
                     />
                   </TableCell>
                   <TableCell>
@@ -294,7 +294,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
                       gutterBottom
                       noWrap
                     >
-                      {cryptoOrder.amountCrypto}
+                      {cryptoOrder.amountBook}
                       {cryptoOrder.cryptoCurrency}
                     </Typography>
                     <Typography variant="body2" color="text.secondary" noWrap>
@@ -343,7 +343,7 @@ const RecentOrdersTable: FC<RecentOrdersTableProps> = ({ cryptoOrders }) => {
       <Box p={2}>
         <TablePagination
           component="div"
-          count={filteredCryptoOrders.length}
+          count={filteredBookOrders.length}
           onPageChange={handlePageChange}
           onRowsPerPageChange={handleLimitChange}
           page={page}

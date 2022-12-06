@@ -2,7 +2,7 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from '../../../data/BooksAPI';
-import Book from 'src/content/dashboards/Crypto/Book';
+import Book from 'src/content/dashboards/Book/Book';
 import fi from 'date-fns/esm/locale/fi/index.js';
 import { Box, Container, Grid, Typography } from '@mui/material';
 import { Helmet } from 'react-helmet-async';

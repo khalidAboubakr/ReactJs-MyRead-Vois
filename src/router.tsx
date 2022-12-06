@@ -18,7 +18,7 @@ const Loader = (Component) => (props) =>
 
 // Dashboards
 
-const Crypto = Loader(lazy(() => import('src/content/dashboards/Crypto')));
+const Book = Loader(lazy(() => import('src/content/dashboards/Book')));
 
 // Applications
 
@@ -82,7 +82,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '/',
-        element: <Crypto />
+        element: <Book />
       },
       {
         path: 'overview',
@@ -125,7 +125,7 @@ const routes: RouteObject[] = [
     children: [
       {
         path: '',
-        element: <Crypto />
+        element: <Book />
       }
     ]
   },
