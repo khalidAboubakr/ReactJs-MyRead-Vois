@@ -10,6 +10,6 @@ export interface BookOrder {
   sourceDesc: string;
   amountBook: number;
   amount: number;
-  cryptoCurrency: string;
+  bookCurrency: string;
   currency: string;
 }
